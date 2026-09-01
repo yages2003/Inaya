@@ -1,0 +1,5 @@
+[run]
+omit =
+    tests/*
+    seed.py
+    create_tables.py

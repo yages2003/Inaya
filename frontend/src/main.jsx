@@ -1,22 +1,23 @@
 import React from "react";
 import ReactDOM from "react-dom/client";
-import { MantineProvider } from "@mantine/core";
-import { Notifications } from "@mantine/notifications";
+import { Toaster } from "react-hot-toast";
 import { BrowserRouter } from "react-router-dom";
 
-import "@mantine/core/styles.css";
-import "@mantine/notifications/styles.css";
+import "./index.css";
 
-import { theme } from "./theme/theme";
+import { AuthProvider } from "./auth/AuthContext";
+import ErrorBoundary from "./ErrorBoundary";
 import App from "./App";
 
 ReactDOM.createRoot(document.getElementById("root")).render(
   <React.StrictMode>
-    <MantineProvider theme={theme} defaultColorScheme="light">
-      <Notifications position="top-right" />
-      <BrowserRouter>
-        <App />
-      </BrowserRouter>
-    </MantineProvider>
+    <Toaster position="top-right" />
+    <BrowserRouter>
+      <AuthProvider>
+        <ErrorBoundary>
+          <App />
+        </ErrorBoundary>
+      </AuthProvider>
+    </BrowserRouter>
   </React.StrictMode>
 );

@@ -1,25 +1,16 @@
 """
-Inaya — Pydantic schemas (request/response validation layer).
-These sit between the API and the SQLAlchemy models.
+Inaya — Pydantic schemas (request/response validation).
 """
 
 from datetime import date, datetime
 from typing import Optional, List
 from pydantic import BaseModel, EmailStr, Field, ConfigDict
 
-from models import (
-    ProjectStatus,
-    TaskStatus,
-    TaskCategory,
-    TaskPriority,
-    RiskLevel,
-)
+from models import ProjectStatus, TaskStatus, TaskCategory, TaskPriority, RiskLevel
+from permissions import Role
 
 
-# ---------------------------------------------------------------------------
-# Assignee
-# ---------------------------------------------------------------------------
-
+# ---- Assignee ----
 class AssigneeBase(BaseModel):
     name: str = Field(..., min_length=1, max_length=120)
     email: EmailStr
@@ -30,13 +21,6 @@ class AssigneeCreate(AssigneeBase):
     pass
 
 
-class AssigneeUpdate(BaseModel):
-    name: Optional[str] = Field(None, min_length=1, max_length=120)
-    email: Optional[EmailStr] = None
-    role: Optional[str] = Field(None, max_length=120)
-    is_active: Optional[int] = Field(None, ge=0, le=1)
-
-
 class AssigneeOut(AssigneeBase):
     model_config = ConfigDict(from_attributes=True)
     id: int
@@ -44,10 +28,7 @@ class AssigneeOut(AssigneeBase):
     created_at: datetime
 
 
-# ---------------------------------------------------------------------------
-# Comment
-# ---------------------------------------------------------------------------
-
+# ---- Comment ----
 class CommentBase(BaseModel):
     content: str = Field(..., min_length=1)
     author_id: Optional[int] = None
@@ -64,10 +45,7 @@ class CommentOut(CommentBase):
     created_at: datetime
 
 
-# ---------------------------------------------------------------------------
-# Task
-# ---------------------------------------------------------------------------
-
+# ---- Task ----
 class TaskBase(BaseModel):
     title: str = Field(..., min_length=1, max_length=200)
     description: Optional[str] = None
@@ -109,12 +87,10 @@ class TaskOut(TaskBase):
     comments: List[CommentOut] = []
 
 
-# ---------------------------------------------------------------------------
-# Project
-# ---------------------------------------------------------------------------
-
+# ---- Project ----
 class ProjectBase(BaseModel):
     name: str = Field(..., min_length=1, max_length=200)
+    key: Optional[str] = Field(None, max_length=10)
     description: Optional[str] = None
     status: ProjectStatus = ProjectStatus.on_track
     start_date: date
@@ -127,6 +103,7 @@ class ProjectCreate(ProjectBase):
 
 class ProjectUpdate(BaseModel):
     name: Optional[str] = Field(None, min_length=1, max_length=200)
+    key: Optional[str] = Field(None, max_length=10)
     description: Optional[str] = None
     status: Optional[ProjectStatus] = None
     start_date: Optional[date] = None
@@ -141,14 +118,10 @@ class ProjectOut(ProjectBase):
 
 
 class ProjectDetailOut(ProjectOut):
-    """Project with its tasks nested — used for the detail view."""
     tasks: List[TaskOut] = []
 
 
-# ---------------------------------------------------------------------------
-# Activity
-# ---------------------------------------------------------------------------
-
+# ---- Activity ----
 class ActivityOut(BaseModel):
     model_config = ConfigDict(from_attributes=True)
     id: int
@@ -160,10 +133,7 @@ class ActivityOut(BaseModel):
     created_at: datetime
 
 
-# ---------------------------------------------------------------------------
-# AI output
-# ---------------------------------------------------------------------------
-
+# ---- AI ----
 class RiskSignalOut(BaseModel):
     model_config = ConfigDict(from_attributes=True)
     id: int
@@ -189,3 +159,34 @@ class ProjectAISummaryOut(BaseModel):
     derived_status: Optional[ProjectStatus] = None
     model_used: Optional[str] = None
     generated_at: datetime
+
+
+# ---- Users & auth ----
+class UserRegister(BaseModel):
+    name: str = Field(..., min_length=1, max_length=120)
+    email: EmailStr
+    password: str = Field(..., min_length=6, max_length=128)
+
+
+class UserOut(BaseModel):
+    model_config = ConfigDict(from_attributes=True)
+    id: int
+    name: str
+    email: EmailStr
+    role: Role
+    is_active: bool
+    created_at: datetime
+
+
+class UserWithPerms(UserOut):
+    permissions: List[str] = []
+
+
+class RoleUpdate(BaseModel):
+    role: Role
+
+
+class TokenOut(BaseModel):
+    access_token: str
+    token_type: str = "bearer"
+    user: UserWithPerms

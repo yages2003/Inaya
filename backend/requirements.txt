@@ -5,7 +5,13 @@ alembic
 psycopg2-binary
 pydantic
 pydantic-settings
+pydantic[email]
+email-validator
 python-dotenv
+python-multipart
+passlib[bcrypt]
+bcrypt==4.2.1
+python-jose[cryptography]
 langchain
 langchain-google-genai
 langchain-groq
