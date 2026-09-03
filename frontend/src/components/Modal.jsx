@@ -15,11 +15,11 @@ export default function Modal({ opened, onClose, title, children, size = "md" })
 
   return (
     <div className="fixed inset-0 z-50 flex items-center justify-center p-4">
-      <div className="absolute inset-0 animate-overlay-in bg-slate-900/50 backdrop-blur-sm" onClick={onClose} />
-      <div className={`relative w-full ${sizeClass} max-h-[85vh] animate-modal-in overflow-y-auto rounded-xl border border-slate-200 bg-white shadow-2xl shadow-slate-900/10`}>
-        <div className="flex items-center justify-between border-b border-slate-100 px-5 py-4">
-          <h3 className="text-base font-semibold text-slate-800">{title}</h3>
-          <button onClick={onClose} className="rounded-md p-1.5 text-slate-400 transition-colors hover:bg-slate-100 hover:text-slate-600 focus-ring">
+      <div className="absolute inset-0 animate-overlay-in bg-slate-900/50 backdrop-blur-sm dark:bg-slate-950/70" onClick={onClose} />
+      <div className={`relative w-full ${sizeClass} max-h-[85vh] animate-modal-in overflow-y-auto rounded-xl border border-slate-200 bg-white shadow-2xl shadow-slate-900/10 dark:border-slate-700 dark:bg-slate-800 dark:shadow-black/30`}>
+        <div className="flex items-center justify-between border-b border-slate-100 px-5 py-4 dark:border-slate-700">
+          <h3 className="text-base font-semibold text-slate-800 dark:text-slate-100">{title}</h3>
+          <button onClick={onClose} className="rounded-md p-1.5 text-slate-400 transition-colors hover:bg-slate-100 hover:text-slate-600 focus-ring dark:hover:bg-slate-700 dark:hover:text-slate-200">
             <IconX size={18} />
           </button>
         </div>

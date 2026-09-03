@@ -4,6 +4,7 @@ import {
 } from "recharts";
 import { IconTimeline } from "@tabler/icons-react";
 import { TASK_STATUS } from "../constants";
+import { useTheme } from "../theme/ThemeContext";
 
 const DAY = 24 * 60 * 60 * 1000;
 
@@ -20,14 +21,14 @@ function CustomTooltip({ active, payload }) {
   const d = payload[0].payload;
   const meta = TASK_STATUS[d.status] || { label: d.status, bg: "bg-slate-100", text: "text-slate-600" };
   return (
-    <div className="min-w-[180px] rounded-lg border border-slate-200 bg-white p-3 text-xs shadow-lg">
-      <p className="mb-1.5 font-semibold text-slate-800">{d.title}</p>
+    <div className="min-w-[180px] rounded-lg border border-slate-200 bg-white p-3 text-xs shadow-lg dark:border-slate-700 dark:bg-slate-800 dark:shadow-black/30">
+      <p className="mb-1.5 font-semibold text-slate-800 dark:text-slate-100">{d.title}</p>
       <div className="flex items-center gap-1.5">
         <span className={`rounded-full px-1.5 py-0.5 text-[11px] font-medium ${meta.bg} ${meta.text}`}>{meta.label}</span>
       </div>
-      <p className="mt-1.5 text-slate-500">{fmtShort(d._start)} → {fmtShort(d._end)}</p>
+      <p className="mt-1.5 text-slate-500 dark:text-slate-400">{fmtShort(d._start)} → {fmtShort(d._end)}</p>
       {d.overdue && (
-        <p className="mt-1.5 flex items-center gap-1 font-medium text-red-600">
+        <p className="mt-1.5 flex items-center gap-1 font-medium text-red-600 dark:text-red-400">
           <span className="h-1.5 w-1.5 rounded-full bg-red-500" /> Overdue
         </p>
       )}
@@ -37,6 +38,11 @@ function CustomTooltip({ active, payload }) {
 
 export default function GanttChart({ tasks }) {
   const [hoverIdx, setHoverIdx] = useState(null);
+  const { theme } = useTheme();
+  const isDark = theme === "dark";
+  const axisColor = isDark ? "#64748b" : "#94a3b8";
+  const gridColor = isDark ? "#334155" : "#e2e8f0";
+  const yTickColor = isDark ? "#cbd5e1" : "#334155";
 
   const model = useMemo(() => {
     const withDates = tasks
@@ -77,11 +83,11 @@ export default function GanttChart({ tasks }) {
 
   if (!model) {
     return (
-      <div className="card flex flex-col items-center gap-3 p-10 text-center">
-        <div className="flex h-11 w-11 items-center justify-center rounded-full bg-slate-100 text-slate-400">
+      <div className="card flex flex-col items-center gap-3 p-10 text-center dark:bg-slate-800 dark:border-slate-700">
+        <div className="flex h-11 w-11 items-center justify-center rounded-full bg-slate-100 text-slate-400 dark:bg-slate-700 dark:text-slate-400">
           <IconTimeline size={20} />
         </div>
-        <p className="text-sm text-slate-500">No tasks with dates to display. Add start and due dates to see the timeline.</p>
+        <p className="text-sm text-slate-500 dark:text-slate-400">No tasks with dates to display. Add start and due dates to see the timeline.</p>
       </div>
     );
   }
@@ -92,14 +98,14 @@ export default function GanttChart({ tasks }) {
   const todayOffset = daysBetween(min, today);
 
   return (
-    <div className="card p-4">
-      <div className="mb-4 flex flex-wrap items-center gap-3 border-b border-slate-100 pb-3">
-        <p className="font-semibold text-slate-800">Timeline</p>
-        <span className="flex items-center gap-1.5 rounded-full bg-red-50 px-2 py-0.5 text-xs font-medium text-red-700">
+    <div className="card p-4 dark:bg-slate-800 dark:border-slate-700">
+      <div className="mb-4 flex flex-wrap items-center gap-3 border-b border-slate-100 pb-3 dark:border-slate-700">
+        <p className="font-semibold text-slate-800 dark:text-slate-100">Timeline</p>
+        <span className="flex items-center gap-1.5 rounded-full bg-red-50 px-2 py-0.5 text-xs font-medium text-red-700 dark:bg-red-500/10 dark:text-red-400">
           <span className="h-1.5 w-1.5 rounded-full bg-red-500" /> Overdue / slipped
         </span>
-        <span className="flex items-center gap-1.5 text-xs text-slate-400">
-          <span className="h-2.5 border-l-2 border-dashed border-red-400" /> Today
+        <span className="flex items-center gap-1.5 text-xs text-slate-400 dark:text-slate-500">
+          <span className="h-2.5 border-l-2 border-dashed border-red-400 dark:border-red-500" /> Today
         </span>
       </div>
 
@@ -111,18 +117,18 @@ export default function GanttChart({ tasks }) {
               <XAxis
                 type="number" domain={[0, totalDays]}
                 tickFormatter={(v) => fmtShort(new Date(min.getTime() + v * DAY))}
-                tick={{ fontSize: 11, fill: "#94a3b8", fontFamily: "Inter, sans-serif" }}
-                axisLine={{ stroke: "#e2e8f0" }}
-                tickLine={{ stroke: "#e2e8f0" }}
+                tick={{ fontSize: 11, fill: axisColor, fontFamily: "Inter, sans-serif" }}
+                axisLine={{ stroke: gridColor }}
+                tickLine={{ stroke: gridColor }}
                 ticks={Array.from({ length: Math.floor(totalDays / 7) + 1 }, (_, i) => i * 7)}
               />
               <YAxis type="category" dataKey="title" width={200}
-                tick={{ fontSize: 12, fill: "#334155", fontFamily: "Inter, sans-serif" }}
-                axisLine={{ stroke: "#e2e8f0" }}
+                tick={{ fontSize: 12, fill: yTickColor, fontFamily: "Inter, sans-serif" }}
+                axisLine={{ stroke: gridColor }}
                 tickLine={false}
                 tickFormatter={(v) => (v.length > 24 ? v.slice(0, 24) + "…" : v)} />
               <Tooltip content={<CustomTooltip />} />
-              <ReferenceLine x={todayOffset} stroke="#EF4444" strokeWidth={2} strokeDasharray="4 3" />
+              <ReferenceLine x={todayOffset} stroke={isDark ? "#F87171" : "#EF4444"} strokeWidth={2} strokeDasharray="4 3" />
               {/* invisible offset bar to push the visible bar to the right start position */}
               <Bar dataKey="startOffset" stackId="gantt" fill="transparent" isAnimationActive={false} />
               <Bar dataKey="duration" stackId="gantt" radius={4} isAnimationActive={false}
@@ -131,8 +137,8 @@ export default function GanttChart({ tasks }) {
                   const meta = TASK_STATUS[t.status] || { solid: "#94a3b8" };
                   return (
                     <Cell key={t.id} fill={meta.solid}
-                      fillOpacity={t.status === "done" ? 0.55 : 0.9}
-                      stroke={t.overdue ? "#b91c1c" : "transparent"}
+                      fillOpacity={t.status === "done" ? (isDark ? 0.4 : 0.55) : (isDark ? 0.85 : 0.9)}
+                      stroke={t.overdue ? (isDark ? "#f87171" : "#b91c1c") : "transparent"}
                       strokeWidth={t.overdue ? 2 : 0} />
                   );
                 })}

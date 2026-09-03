@@ -2,27 +2,27 @@
 // Colors are Tailwind-compatible: { bg, text, dot, border } utility classes.
 
 export const PROJECT_STATUS = {
-  on_track: { label: "On track", bg: "bg-emerald-50", text: "text-emerald-700", dot: "bg-emerald-500", solid: "bg-emerald-500" },
-  at_risk: { label: "At risk", bg: "bg-amber-50", text: "text-amber-700", dot: "bg-amber-500", solid: "bg-amber-500" },
-  delayed: { label: "Delayed", bg: "bg-red-50", text: "text-red-700", dot: "bg-red-500", solid: "bg-red-500" },
-  completed: { label: "Completed", bg: "bg-violet-50", text: "text-violet-700", dot: "bg-violet-500", solid: "bg-violet-500" },
+  on_track: { label: "On track", bg: "bg-emerald-50 dark:bg-emerald-500/10", text: "text-emerald-700 dark:text-emerald-400", dot: "bg-emerald-500", solid: "bg-emerald-500" },
+  at_risk: { label: "At risk", bg: "bg-amber-50 dark:bg-amber-500/10", text: "text-amber-700 dark:text-amber-400", dot: "bg-amber-500", solid: "bg-amber-500" },
+  delayed: { label: "Delayed", bg: "bg-red-50 dark:bg-red-500/10", text: "text-red-700 dark:text-red-400", dot: "bg-red-500", solid: "bg-red-500" },
+  completed: { label: "Completed", bg: "bg-violet-50 dark:bg-violet-500/10", text: "text-violet-700 dark:text-violet-400", dot: "bg-violet-500", solid: "bg-violet-500" },
 };
 
 export const TASK_STATUS = {
-  todo: { label: "To do", bg: "bg-slate-100", text: "text-slate-600", dot: "bg-slate-400", solid: "#94a3b8" },
-  in_progress: { label: "In progress", bg: "bg-blue-50", text: "text-blue-700", dot: "bg-blue-500", solid: "#3b82f6" },
-  review: { label: "In review", bg: "bg-violet-50", text: "text-violet-700", dot: "bg-violet-500", solid: "#8B5CF6" },
-  done: { label: "Done", bg: "bg-emerald-50", text: "text-emerald-700", dot: "bg-emerald-500", solid: "#10B981" },
-  blocked: { label: "Blocked", bg: "bg-red-50", text: "text-red-700", dot: "bg-red-500", solid: "#EF4444" },
+  todo: { label: "To do", bg: "bg-slate-100 dark:bg-slate-700/50", text: "text-slate-600 dark:text-slate-300", dot: "bg-slate-400", solid: "#94a3b8" },
+  in_progress: { label: "In progress", bg: "bg-blue-50 dark:bg-blue-500/10", text: "text-blue-700 dark:text-blue-400", dot: "bg-blue-500", solid: "#3b82f6" },
+  review: { label: "In review", bg: "bg-violet-50 dark:bg-violet-500/10", text: "text-violet-700 dark:text-violet-400", dot: "bg-violet-500", solid: "#8B5CF6" },
+  done: { label: "Done", bg: "bg-emerald-50 dark:bg-emerald-500/10", text: "text-emerald-700 dark:text-emerald-400", dot: "bg-emerald-500", solid: "#10B981" },
+  blocked: { label: "Blocked", bg: "bg-red-50 dark:bg-red-500/10", text: "text-red-700 dark:text-red-400", dot: "bg-red-500", solid: "#EF4444" },
 };
 
 export const TASK_COLUMNS = ["todo", "in_progress", "review", "done", "blocked"];
 
 export const TASK_PRIORITY = {
-  low: { label: "Low", bg: "bg-slate-100", text: "text-slate-500" },
-  medium: { label: "Medium", bg: "bg-blue-50", text: "text-blue-600" },
-  high: { label: "High", bg: "bg-amber-50", text: "text-amber-600" },
-  critical: { label: "Critical", bg: "bg-red-50", text: "text-red-600" },
+  low: { label: "Low", bg: "bg-slate-100 dark:bg-slate-700/50", text: "text-slate-500 dark:text-slate-400" },
+  medium: { label: "Medium", bg: "bg-blue-50 dark:bg-blue-500/10", text: "text-blue-600 dark:text-blue-400" },
+  high: { label: "High", bg: "bg-amber-50 dark:bg-amber-500/10", text: "text-amber-600 dark:text-amber-400" },
+  critical: { label: "Critical", bg: "bg-red-50 dark:bg-red-500/10", text: "text-red-600 dark:text-red-400" },
 };
 
 export const TASK_CATEGORY = {
@@ -45,14 +45,14 @@ export const ROLE_LABELS = {
 };
 
 export const ROLE_COLORS = {
-  super_admin: { bg: "bg-red-50", text: "text-red-700" },
-  org_admin: { bg: "bg-purple-50", text: "text-purple-700" },
-  project_manager: { bg: "bg-emerald-50", text: "text-emerald-700" },
-  scrum_master: { bg: "bg-cyan-50", text: "text-cyan-700" },
-  developer: { bg: "bg-blue-50", text: "text-blue-700" },
-  qa_engineer: { bg: "bg-green-50", text: "text-green-700" },
-  reporter: { bg: "bg-orange-50", text: "text-orange-700" },
-  viewer: { bg: "bg-slate-100", text: "text-slate-600" },
+  super_admin: { bg: "bg-red-50 dark:bg-red-500/10", text: "text-red-700 dark:text-red-400" },
+  org_admin: { bg: "bg-purple-50 dark:bg-purple-500/10", text: "text-purple-700 dark:text-purple-400" },
+  project_manager: { bg: "bg-emerald-50 dark:bg-emerald-500/10", text: "text-emerald-700 dark:text-emerald-400" },
+  scrum_master: { bg: "bg-cyan-50 dark:bg-cyan-500/10", text: "text-cyan-700 dark:text-cyan-400" },
+  developer: { bg: "bg-blue-50 dark:bg-blue-500/10", text: "text-blue-700 dark:text-blue-400" },
+  qa_engineer: { bg: "bg-green-50 dark:bg-green-500/10", text: "text-green-700 dark:text-green-400" },
+  reporter: { bg: "bg-orange-50 dark:bg-orange-500/10", text: "text-orange-700 dark:text-orange-400" },
+  viewer: { bg: "bg-slate-100 dark:bg-slate-700/50", text: "text-slate-600 dark:text-slate-300" },
 };
 
 export const ROLE_OPTIONS = Object.entries(ROLE_LABELS).map(([value, label]) => ({ value, label }));
@@ -82,11 +82,11 @@ export function dueMeta(due) {
   const today = new Date();
   today.setHours(0, 0, 0, 0);
   const days = Math.round((d - today) / (24 * 60 * 60 * 1000));
-  if (days < 0) return { label: `${Math.abs(days)}d overdue`, bg: "bg-red-50", text: "text-red-700" };
-  if (days === 0) return { label: "Due today", bg: "bg-amber-50", text: "text-amber-700" };
-  if (days <= 3) return { label: `Due in ${days}d`, bg: "bg-amber-50", text: "text-amber-600" };
+  if (days < 0) return { label: `${Math.abs(days)}d overdue`, bg: "bg-red-50 dark:bg-red-500/10", text: "text-red-700 dark:text-red-400" };
+  if (days === 0) return { label: "Due today", bg: "bg-amber-50 dark:bg-amber-500/10", text: "text-amber-700 dark:text-amber-400" };
+  if (days <= 3) return { label: `Due in ${days}d`, bg: "bg-amber-50 dark:bg-amber-500/10", text: "text-amber-600 dark:text-amber-400" };
   return {
     label: `Due ${d.toLocaleDateString(undefined, { month: "short", day: "numeric" })}`,
-    bg: "bg-slate-100", text: "text-slate-600",
+    bg: "bg-slate-100 dark:bg-slate-700/50", text: "text-slate-600 dark:text-slate-300",
   };
 }

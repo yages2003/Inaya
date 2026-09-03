@@ -1,6 +1,6 @@
 import { useState } from "react";
 import { useNavigate, Link } from "react-router-dom";
-import { IconChartArcs, IconAlertCircle } from "@tabler/icons-react";
+import { IconAlertCircle } from "@tabler/icons-react";
 import { useAuth } from "../auth/AuthContext";
 
 function extractError(e) {
@@ -42,11 +42,8 @@ export default function Register() {
         className="hidden flex-1 flex-col justify-center p-14 text-white sm:flex"
         style={{ background: "linear-gradient(150deg, #0f172a 0%, #312e81 60%, #6366F1 100%)" }}
       >
-        <div className="mb-10 flex items-center gap-3">
-          <div className="flex h-12 w-12 items-center justify-center rounded-md bg-white text-indigo-600">
-            <IconChartArcs size={28} />
-          </div>
-          <h1 className="text-3xl font-bold tracking-tight">Inaya</h1>
+        <div className="mb-10">
+          <img src="/logo-lockup.png" alt="Inaya" className="h-16 w-auto" />
         </div>
         <h2 className="max-w-md text-2xl font-semibold leading-tight">
           Get your team organized in minutes.
@@ -58,11 +55,11 @@ export default function Register() {
 
       <div className="flex flex-1 items-center justify-center p-6">
         <div className="w-full max-w-sm">
-          <h2 className="mb-1 text-2xl font-bold text-slate-800">Create account</h2>
-          <p className="mb-6 text-sm text-slate-500">Start managing projects with your team.</p>
+          <h2 className="mb-1 text-2xl font-bold text-slate-800 dark:text-slate-100">Create account</h2>
+          <p className="mb-6 text-sm text-slate-500 dark:text-slate-400">Start managing projects with your team.</p>
 
           {error && (
-            <div className="mb-4 flex animate-fade-in items-start gap-2 rounded-lg border border-red-100 bg-red-50 px-3 py-2 text-sm text-red-700">
+            <div className="mb-4 flex animate-fade-in items-start gap-2 rounded-lg border border-red-100 bg-red-50 px-3 py-2 text-sm text-red-700 dark:border-red-500/20 dark:bg-red-500/10 dark:text-red-400">
               <IconAlertCircle size={16} className="mt-0.5 shrink-0" />
               <span>{error}</span>
             </div>
@@ -70,28 +67,28 @@ export default function Register() {
 
           <div className="space-y-4">
             <div>
-              <label className="mb-1 block text-sm font-medium text-slate-700">Full name</label>
+              <label className="mb-1 block text-sm font-medium text-slate-700 dark:text-slate-300">Full name</label>
               <input
                 placeholder="Jane Doe" value={form.name}
                 onChange={(e) => setForm({ ...form, name: e.target.value })}
-                className="w-full rounded-lg border border-slate-300 px-3 py-2 text-sm text-slate-700 outline-none transition-colors focus-ring"
+                className="w-full rounded-lg border border-slate-300 px-3 py-2 text-sm text-slate-700 outline-none transition-colors focus-ring dark:border-slate-700 dark:bg-slate-800 dark:text-slate-200 dark:placeholder:text-slate-500"
               />
             </div>
             <div>
-              <label className="mb-1 block text-sm font-medium text-slate-700">Email</label>
+              <label className="mb-1 block text-sm font-medium text-slate-700 dark:text-slate-300">Email</label>
               <input
                 type="email" placeholder="you@company.com" value={form.email}
                 onChange={(e) => setForm({ ...form, email: e.target.value })}
-                className="w-full rounded-lg border border-slate-300 px-3 py-2 text-sm text-slate-700 outline-none transition-colors focus-ring"
+                className="w-full rounded-lg border border-slate-300 px-3 py-2 text-sm text-slate-700 outline-none transition-colors focus-ring dark:border-slate-700 dark:bg-slate-800 dark:text-slate-200 dark:placeholder:text-slate-500"
               />
             </div>
             <div>
-              <label className="mb-1 block text-sm font-medium text-slate-700">Password</label>
+              <label className="mb-1 block text-sm font-medium text-slate-700 dark:text-slate-300">Password</label>
               <input
                 type="password" placeholder="At least 6 characters" value={form.password}
                 onChange={(e) => setForm({ ...form, password: e.target.value })}
                 onKeyDown={(e) => e.key === "Enter" && submit()}
-                className="w-full rounded-lg border border-slate-300 px-3 py-2 text-sm text-slate-700 outline-none transition-colors focus-ring"
+                className="w-full rounded-lg border border-slate-300 px-3 py-2 text-sm text-slate-700 outline-none transition-colors focus-ring dark:border-slate-700 dark:bg-slate-800 dark:text-slate-200 dark:placeholder:text-slate-500"
               />
             </div>
             <button
@@ -102,9 +99,9 @@ export default function Register() {
             </button>
           </div>
 
-          <p className="mt-6 text-center text-sm text-slate-500">
+          <p className="mt-6 text-center text-sm text-slate-500 dark:text-slate-400">
             Already have an account?{" "}
-            <Link to="/login" className="font-medium text-indigo-600 hover:underline">Sign in</Link>
+            <Link to="/login" className="font-medium text-indigo-600 hover:underline dark:text-indigo-400">Sign in</Link>
           </p>
         </div>
       </div>

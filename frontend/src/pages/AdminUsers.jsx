@@ -43,11 +43,11 @@ export default function AdminUsers() {
 
   return (
     <>
-      <h2 className="mb-1 text-2xl font-bold text-slate-800">User management</h2>
-      <p className="mb-6 text-sm text-slate-500">Assign roles and control access. Each role grants a different set of permissions.</p>
-      <div className="overflow-hidden rounded-xl border border-slate-200 bg-white shadow-sm">
+      <h2 className="mb-1 text-2xl font-bold text-slate-800 dark:text-slate-100">User management</h2>
+      <p className="mb-6 text-sm text-slate-500 dark:text-slate-400">Assign roles and control access. Each role grants a different set of permissions.</p>
+      <div className="overflow-hidden rounded-xl border border-slate-200 bg-white shadow-sm dark:border-slate-700 dark:bg-slate-800">
         <table className="w-full text-left text-sm">
-          <thead className="border-b border-slate-100 bg-slate-50 text-xs font-semibold uppercase tracking-wide text-slate-500">
+          <thead className="border-b border-slate-100 bg-slate-50 text-xs font-semibold uppercase tracking-wide text-slate-500 dark:border-slate-700 dark:bg-slate-900/40 dark:text-slate-400">
             <tr>
               <th className="px-5 py-3">User</th>
               <th className="px-5 py-3">Email</th>
@@ -60,35 +60,47 @@ export default function AdminUsers() {
               const isSelf = me?.id === u.id;
               const rc = ROLE_COLORS[u.role] || { bg: "bg-slate-100", text: "text-slate-600" };
               return (
-                <tr key={u.id} className="border-b border-slate-50 transition-colors last:border-0 hover:bg-slate-50">
+                <tr key={u.id} className="border-b border-slate-50 transition-colors last:border-0 hover:bg-slate-50 dark:border-slate-800 dark:hover:bg-slate-700/40">
                   <td className="px-5 py-3">
                     <div className="flex items-center gap-3">
                       <div className={`flex h-[34px] w-[34px] shrink-0 items-center justify-center rounded-full text-xs font-semibold text-white ${avatarColor(u.name)}`}>
                         {initials(u.name)}
                       </div>
                       <div>
-                        <p className="text-sm font-medium text-slate-800">
-                          {u.name} {isSelf && <span className="text-xs text-slate-400">(you)</span>}
+                        <p className="text-sm font-medium text-slate-800 dark:text-slate-100">
+                          {u.name} {isSelf && <span className="text-xs text-slate-400 dark:text-slate-500">(you)</span>}
                         </p>
                         <span className={`inline-block rounded-full px-1.5 py-0.5 text-xs ${rc.bg} ${rc.text}`}>{ROLE_LABELS[u.role]}</span>
                       </div>
                     </div>
                   </td>
-                  <td className="px-5 py-3 text-slate-500">{u.email}</td>
+                  <td className="px-5 py-3 text-slate-500 dark:text-slate-400">{u.email}</td>
                   <td className="px-5 py-3">
                     <select value={u.role} onChange={(e) => onRoleChange(u.id, e.target.value)}
-                      className="w-48 rounded-lg border border-slate-300 px-2 py-1 text-xs outline-none focus:border-indigo-400">
+                      className="w-48 rounded-lg border border-slate-300 px-2 py-1 text-xs outline-none focus:border-indigo-400 dark:border-slate-600 dark:bg-slate-900 dark:text-slate-200 dark:focus:border-indigo-500">
                       {ROLE_OPTIONS.map((o) => <option key={o.value} value={o.value}>{o.label}</option>)}
                     </select>
                   </td>
                   <td className="px-5 py-3">
-                    <button
-                      disabled={isSelf}
-                      onClick={() => onActiveToggle(u.id, !u.is_active)}
-                      className={`focus-ring relative h-6 w-11 rounded-full transition-colors disabled:cursor-not-allowed disabled:opacity-40 ${u.is_active ? "bg-indigo-600" : "bg-slate-300"}`}
-                    >
-                      <span className={`absolute top-0.5 h-5 w-5 rounded-full bg-white transition-transform ${u.is_active ? "translate-x-5" : "translate-x-0.5"}`} />
-                    </button>
+                    <div className="flex items-center gap-2">
+                      <button
+                        disabled={isSelf}
+                        onClick={() => onActiveToggle(u.id, !u.is_active)}
+                        aria-pressed={u.is_active}
+                        className={`focus-ring relative inline-flex h-6 w-11 shrink-0 items-center rounded-full border transition-colors disabled:cursor-not-allowed disabled:opacity-40 ${
+                          u.is_active ? "border-indigo-600 bg-indigo-600" : "border-slate-300 bg-slate-200 dark:border-slate-600 dark:bg-slate-700"
+                        }`}
+                      >
+                        <span
+                          className={`inline-block h-[18px] w-[18px] rounded-full bg-white shadow-md ring-1 ring-slate-900/5 transition-transform ${
+                            u.is_active ? "translate-x-[22px]" : "translate-x-[3px]"
+                          }`}
+                        />
+                      </button>
+                      <span className={`text-xs font-medium ${u.is_active ? "text-emerald-600 dark:text-emerald-400" : "text-slate-400 dark:text-slate-500"}`}>
+                        {u.is_active ? "Active" : "Inactive"}
+                      </span>
+                    </div>
                   </td>
                 </tr>
               );

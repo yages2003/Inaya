@@ -1,11 +1,12 @@
 import { Routes, Route, Navigate, Link, useLocation, useNavigate } from "react-router-dom";
 import { useState, useRef, useEffect } from "react";
 import {
-  IconChartArcs, IconLayoutDashboard, IconListCheck, IconActivity, IconUsersGroup,
-  IconLogout, IconChevronDown, IconSearch, IconReportAnalytics,
+  IconLayoutDashboard, IconListCheck, IconActivity, IconUsersGroup,
+  IconLogout, IconChevronDown, IconSearch, IconReportAnalytics, IconSun, IconMoon,
 } from "@tabler/icons-react";
 
 import { useAuth } from "./auth/AuthContext";
+import { useTheme } from "./theme/ThemeContext";
 import ProtectedRoute from "./auth/ProtectedRoute";
 import { ROLE_LABELS, ROLE_COLORS, initials, avatarColor } from "./constants";
 
@@ -38,14 +39,9 @@ function Sidebar() {
   const is = (p) => pathname === p || (p !== "/dashboard" && pathname.startsWith(p));
   return (
     <div className="flex h-full flex-col gap-1">
-      <div className="mb-3 flex items-center gap-3 px-2 py-4">
-        <div className="flex h-9 w-9 items-center justify-center rounded-md bg-indigo-500 text-white shadow-sm shadow-indigo-900/40">
-          <IconChartArcs size={22} />
-        </div>
-        <div>
-          <p className="text-lg font-bold leading-none text-white">Inaya</p>
-          <p className="text-xs text-slate-500">Project management</p>
-        </div>
+      <div className="mb-3 flex items-center gap-2 px-2 py-4">
+        <img src="/logo-lockup.png" alt="Inaya" className="h-11 w-auto" />
+        <p className="text-xs text-slate-500">Project management</p>
       </div>
       <p className="mb-1 px-3.5 text-[11px] font-semibold uppercase tracking-wider text-slate-600">Workspace</p>
       <SideItem to="/dashboard" label="Dashboard" icon={<IconLayoutDashboard size={19} />} active={pathname === "/dashboard"} />
@@ -79,34 +75,49 @@ function UserMenu() {
 
   return (
     <div className="relative" ref={ref}>
-      <button onClick={() => setOpen((o) => !o)} className="focus-ring flex items-center gap-2 rounded-lg p-1 pr-2 transition-colors hover:bg-slate-100">
+      <button onClick={() => setOpen((o) => !o)} className="focus-ring flex items-center gap-2 rounded-lg p-1 pr-2 transition-colors hover:bg-slate-100 dark:hover:bg-slate-800">
         <div className={`flex h-[34px] w-[34px] items-center justify-center rounded-full text-xs font-semibold text-white ${avatarColor(user.name)}`}>
           {initials(user.name)}
         </div>
         <div className="hidden text-left sm:block">
-          <p className="text-sm font-medium leading-none text-slate-800">{user.name}</p>
-          <p className="text-xs text-slate-500">{ROLE_LABELS[user.role]}</p>
+          <p className="text-sm font-medium leading-none text-slate-800 dark:text-slate-100">{user.name}</p>
+          <p className="text-xs text-slate-500 dark:text-slate-400">{ROLE_LABELS[user.role]}</p>
         </div>
         <IconChevronDown size={14} className={`text-slate-400 transition-transform ${open ? "rotate-180" : ""}`} />
       </button>
       {open && (
-        <div className="animate-fade-in absolute right-0 z-40 mt-2 w-60 rounded-lg border border-slate-200 bg-white p-2 shadow-lg shadow-slate-900/5">
+        <div className="animate-fade-in absolute right-0 z-40 mt-2 w-60 rounded-lg border border-slate-200 bg-white p-2 shadow-lg shadow-slate-900/5 dark:border-slate-700 dark:bg-slate-800">
           <div className="px-2 py-1.5">
-            <p className="text-xs text-slate-500">Signed in as</p>
-            <p className="truncate text-xs text-slate-500">{user.email}</p>
+            <p className="text-xs text-slate-500 dark:text-slate-400">Signed in as</p>
+            <p className="truncate text-xs text-slate-500 dark:text-slate-400">{user.email}</p>
           </div>
           <div className="px-2 py-1">
             <span className={`inline-block rounded-full px-2 py-0.5 text-xs font-medium ${roleColor.bg} ${roleColor.text}`}>
               {ROLE_LABELS[user.role]}
             </span>
           </div>
-          <div className="my-1 border-t border-slate-100" />
-          <button onClick={logout} className="flex w-full items-center gap-2 rounded-md px-2 py-1.5 text-sm text-red-600 transition-colors hover:bg-red-50">
+          <div className="my-1 border-t border-slate-100 dark:border-slate-700" />
+          <button onClick={logout} className="flex w-full items-center gap-2 rounded-md px-2 py-1.5 text-sm text-red-600 transition-colors hover:bg-red-50 dark:text-red-400 dark:hover:bg-red-500/10">
             <IconLogout size={16} /> Log out
           </button>
         </div>
       )}
     </div>
+  );
+}
+
+export function ThemeToggle({ className = "" }) {
+  const { theme, toggleTheme } = useTheme();
+  const isDark = theme === "dark";
+  return (
+    <button
+      onClick={toggleTheme}
+      aria-label={isDark ? "Switch to light mode" : "Switch to dark mode"}
+      title={isDark ? "Switch to light mode" : "Switch to dark mode"}
+      className={`focus-ring flex h-9 w-9 items-center justify-center rounded-lg text-slate-500 transition-colors hover:bg-slate-100 dark:text-slate-400 dark:hover:bg-slate-800 ${className}`}
+    >
+      {isDark ? <IconSun size={18} /> : <IconMoon size={18} />}
+    </button>
   );
 }
 
@@ -122,7 +133,7 @@ function HeaderSearch() {
           value={q}
           onChange={(e) => setQ(e.target.value)}
           onKeyDown={(e) => { if (e.key === "Enter") navigate("/dashboard"); }}
-          className="focus-ring w-full rounded-lg border border-slate-200 bg-slate-50 py-2 pl-9 pr-3 text-sm text-slate-700 transition-colors focus:border-indigo-400 focus:bg-white"
+          className="focus-ring w-full rounded-lg border border-slate-200 bg-slate-50 py-2 pl-9 pr-3 text-sm text-slate-700 transition-colors focus:border-indigo-400 focus:bg-white dark:border-slate-700 dark:bg-slate-800 dark:text-slate-200 dark:focus:bg-slate-800"
         />
       </div>
     </div>
@@ -131,14 +142,17 @@ function HeaderSearch() {
 
 function Shell({ children }) {
   return (
-    <div className="flex h-screen bg-slate-50">
+    <div className="flex h-screen bg-slate-50 dark:bg-slate-950">
       <div className="w-[250px] shrink-0 border-r border-slate-800/60 bg-slate-900 p-3 no-print">
         <Sidebar />
       </div>
       <div className="flex flex-1 flex-col overflow-hidden">
-        <header className="flex h-[60px] shrink-0 items-center justify-between border-b border-slate-200 bg-white/80 px-6 backdrop-blur no-print">
+        <header className="flex h-[60px] shrink-0 items-center justify-between border-b border-slate-200 bg-white/80 px-6 backdrop-blur no-print dark:border-slate-800 dark:bg-slate-900/80">
           <HeaderSearch />
-          <UserMenu />
+          <div className="flex items-center gap-2">
+            <ThemeToggle />
+            <UserMenu />
+          </div>
         </header>
         <main className="flex-1 overflow-y-auto p-6">
           <div className="mx-auto max-w-[1400px] animate-fade-in">{children}</div>
