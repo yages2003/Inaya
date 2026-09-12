@@ -1,0 +1,42 @@
+(
+echo name: Project Pulse CI
+echo.
+echo on:
+echo   push:
+echo     branches: [main]
+echo   pull_request:
+echo     branches: [main]
+echo.
+echo jobs:
+echo   test:
+echo     runs-on: ubuntu-latest
+echo.
+echo     services:
+echo       postgres:
+echo         image: postgres:16
+echo         env:
+echo           POSTGRES_USER: postgres
+echo           POSTGRES_PASSWORD: testpass123
+echo           POSTGRES_DB: inaya_test
+echo         ports:
+echo           - 5432:5432
+echo         options: ^>-
+echo           --health-cmd="pg_isready -U postgres"
+echo           --health-interval=10s
+echo           --health-timeout=5s
+echo           --health-retries=5
+echo.
+echo     env:
+echo       DATABASE_URL: postgresql://postgres:testpass123@localhost:5432/inaya_test
+echo       SECRET_KEY: ci-test-secret-key
+echo.
+echo     steps:
+echo       - uses: actions/checkout@v4
+echo       - uses: actions/setup-python@v5
+echo         with:
+echo           python-version: "3.11"
+echo       - run: pip install -r requirements.txt
+echo       - run: pip install pytest pytest-cov httpx
+echo       - run: python create_tables.py
+echo       - run: pytest --cov=. --cov-report=term-missing -q
+) > .github\workflows\ci.yml
