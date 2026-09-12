@@ -28,15 +28,17 @@ jobs:
           --health-timeout=5s
           --health-retries=5
 
-    env:
-      DATABASE_URL: postgresql://postgres:testpass123@localhost:5432/inaya_test
-      SECRET_KEY: ci-test-secret-key
-
     steps:
       - uses: actions/checkout@v4
       - uses: actions/setup-python@v5
         with:
           python-version: "3.11"
+
+      - name: Create .env for CI
+        run: |
+          echo "DATABASE_URL=postgresql://postgres:testpass123@localhost:5432/inaya_test" > .env
+          echo "SECRET_KEY=ci-test-secret-key" >> .env
+
       - run: pip install -r requirements.txt
       - run: pip install pytest pytest-cov httpx
       - run: python create_tables.py
