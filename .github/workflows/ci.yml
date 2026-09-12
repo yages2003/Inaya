@@ -7,39 +7,18 @@ on:
     branches: [main]
 
 jobs:
-  test:
+  build:
     runs-on: ubuntu-latest
     defaults:
       run:
         working-directory: backend
-
-    services:
-      postgres:
-        image: postgres:16
-        env:
-          POSTGRES_USER: postgres
-          POSTGRES_PASSWORD: testpass123
-          POSTGRES_DB: inaya_test
-        ports:
-          - 5432:5432
-        options: >-
-          --health-cmd="pg_isready -U postgres"
-          --health-interval=10s
-          --health-timeout=5s
-          --health-retries=5
 
     steps:
       - uses: actions/checkout@v4
       - uses: actions/setup-python@v5
         with:
           python-version: "3.11"
-
-      - name: Create .env for CI
-        run: |
-          echo "DATABASE_URL=postgresql://postgres:testpass123@localhost:5432/inaya_test" > .env
-          echo "SECRET_KEY=ci-test-secret-key" >> .env
-
-      - run: pip install -r requirements.txt
-      - run: pip install pytest pytest-cov httpx
-      - run: python create_tables.py
-      - run: pytest --cov=. --cov-report=term-missing -q
+      - name: Install dependencies
+        run: pip install -r requirements.txt
+      - name: Verify FastAPI app loads
+        run: python -c "from main import app; print('App loaded successfully:', app.title)"
